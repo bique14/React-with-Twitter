@@ -4,25 +4,60 @@ import './css/tablelist-style.css';
 // import Product from './Product';
 import SeachData from './SearchData'
 
+
+const arr_user_id = []
+const arr_text = []
+const arr_created = []
+const arr_re_count = []
+const arr_fav_count = []
+const arr_sentiment = []
+
 export class TableList extends React.Component {
+    componentDidMount() {
+        fetch('/fetch')
+            .then(res => res.json())
+            .then(List => {
+                List.forEach(function (kuy) {
+                    // console.log(kuy.sentiment)
+                    arr_user_id.push(kuy.user_id)
+                    arr_text.push(kuy.text)
+                    arr_created.push(kuy.created_at)
+                    arr_re_count.push(kuy.retweet_count)
+                    arr_fav_count.push(kuy.fav_count)
+                    arr_sentiment.push(kuy.sentiment)
+                })
+                this.setState({ list: List })
+            })
+
+    }
+
+    constructor(props) {
+        super(props)
+        this.state = {
+            list: []
+        }
+    }
+
     render() {
-        var arr_date = []
+        // var arr_date = []
         var arr_pos = []
         var arr_neg = []
         var arr_all = []
 
-        var chk_sentiment = SeachData.forEach((item, i) => {
+        // var chk_sentiment = 
+
+        this.state.list.forEach((item, i) => {
             if (item.sentiment === 'pos' && (item.created_at == this.props.dateShow)) {
-                console.log('1')                
-                arr_pos.push(SeachData[i])
-                arr_all.push(SeachData[i])
+                console.log('1')
+                arr_pos.push(this.state.list[i])
+                arr_all.push(this.state.list[i])
             } else if (item.sentiment === 'neg' && (item.created_at == this.props.dateShow)) {
-                console.log('2')                
-                arr_neg.push(SeachData[i])
-                arr_all.push(SeachData[i])                
+                console.log('2')
+                arr_neg.push(this.state.list[i])
+                arr_all.push(this.state.list[i])
             }
         })
-        
+
         var list_all = arr_all.map((item, i) => {
             return (
                 <tr key={i}>
@@ -72,11 +107,12 @@ export class TableList extends React.Component {
         return (
             <div className='table-box'>
                 <h1>{this.props.topic} : {this.props.dateShow} ({this.props.type})</h1>
+                {console.log(this.state.list)}
                 <table>
                     <tbody>
                         <tr>
                             <th>no.</th>
-                            <th>screen_name</th>
+                            <th>user_id</th>
                             <th>text</th>
                             <th>created_at</th>
                             <th>re_count</th>
