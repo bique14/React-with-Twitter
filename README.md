@@ -8,20 +8,17 @@ and related to [this project](https://github.com/bique14/AI_miningtweet)
 
 
 ## Folders Structure 
----
 ```
   src // frontend
   server // backend
 ```
 
 ## Required
----
 ```
   brew install mongodb
 ```
 
 ## Start
----
 ***first***
 ```
   mongod
@@ -38,3 +35,4 @@ and related to [this project](https://github.com/bique14/AI_miningtweet)
 ```
 > application will launch in localhost:4000
 
+---
