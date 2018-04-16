@@ -27,12 +27,12 @@ and related to [this project](https://github.com/bique14/AI_miningtweet)
 ```
   nodemon
 ```
-> application will launch in localhost:3000
+> application will launch in localhost:4000
 
 **src folder**
 ```
   npm start
 ```
-> application will launch in localhost:4000
+> application will launch in localhost:3000
 
 ---
