@@ -2,7 +2,7 @@ import React from 'react'
 // import ReactDOM from 'react-dom'
 import './css/tablelist-style.css';
 // import Product from './Product';
-import SeachData from './SearchData'
+// import SeachData from './SearchData'
 
 
 const arr_user_id = []
@@ -68,6 +68,7 @@ export class TableList extends React.Component {
                     <td>{item.retweet_count}</td>
                     <td>{item.fav_count}</td>
                     <td>{item.sentiment}</td>
+                    <td><button>+</button><button>-</button><button>?</button></td>
                 </tr>
             )
         })
@@ -83,6 +84,7 @@ export class TableList extends React.Component {
                     <td>{item.retweet_count}</td>
                     <td>{item.fav_count}</td>
                     <td>{item.sentiment}</td>
+                    <td><button>+</button><button>-</button><button>?</button></td>
                 </tr>
             )
         })
@@ -97,6 +99,7 @@ export class TableList extends React.Component {
                     <td>{item.retweet_count}</td>
                     <td>{item.fav_count}</td>
                     <td>{item.sentiment}</td>
+                    <td><button>+</button><button>-</button><button>?</button></td>
                 </tr>
             )
 
@@ -118,6 +121,7 @@ export class TableList extends React.Component {
                             <th>re_count</th>
                             <th>fav_count</th>
                             <th>sentiment</th>
+                            <th>vote</th>
                         </tr>
                         {chk}
                     </tbody>
