@@ -5,27 +5,28 @@ import './css/tablelist-style.css';
 // import SeachData from './SearchData'
 
 
-const arr_user_id = []
-const arr_text = []
-const arr_created = []
-const arr_re_count = []
-const arr_fav_count = []
-const arr_sentiment = []
+
+// const arr_user_id = []
+// const arr_text = []
+// const arr_created = []
+// const arr_re_count = []
+// const arr_fav_count = []
+// const arr_sentiment = []
 
 export class TableList extends React.Component {
     componentDidMount() {
         fetch('/fetch')
             .then(res => res.json())
             .then(List => {
-                List.forEach(function (kuy) {
-                    // console.log(kuy.sentiment)
-                    arr_user_id.push(kuy.user_id)
-                    arr_text.push(kuy.text)
-                    arr_created.push(kuy.created_at)
-                    arr_re_count.push(kuy.retweet_count)
-                    arr_fav_count.push(kuy.fav_count)
-                    arr_sentiment.push(kuy.sentiment)
-                })
+                // List.forEach(function (kuy) {
+                //     // console.log(kuy.sentiment)
+                //     arr_user_id.push(kuy.user_id)
+                //     arr_text.push(kuy.text)
+                //     arr_created.push(kuy.created_at)
+                //     arr_re_count.push(kuy.retweet_count)
+                //     arr_fav_count.push(kuy.fav_count)
+                //     arr_sentiment.push(kuy.sentiment)
+                // })
                 this.setState({ list: List })
             })
 
@@ -34,9 +35,16 @@ export class TableList extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            list: []
+            list: [],
         }
     }
+
+    onClickVotePos = (item, i) => {
+        console.log(item)
+        console.log(i)
+
+    }
+
 
     render() {
         // var arr_date = []
@@ -44,15 +52,13 @@ export class TableList extends React.Component {
         var arr_neg = []
         var arr_all = []
 
-        // var chk_sentiment = 
-
         this.state.list.forEach((item, i) => {
-            if (item.sentiment === 'pos' && (item.created_at == this.props.dateShow)) {
-                console.log('1')
+            if (item.sentiment === 'pos' && (item.created_at === this.props.dateShow)) {
+                // console.log('1')
                 arr_pos.push(this.state.list[i])
                 arr_all.push(this.state.list[i])
-            } else if (item.sentiment === 'neg' && (item.created_at == this.props.dateShow)) {
-                console.log('2')
+            } else if (item.sentiment === 'neg' && (item.created_at === this.props.dateShow)) {
+                // console.log('2')
                 arr_neg.push(this.state.list[i])
                 arr_all.push(this.state.list[i])
             }
@@ -64,11 +70,36 @@ export class TableList extends React.Component {
                     <td>{i}</td>
                     <td>{item.user_id}</td>
                     <td><div className='td-text'>{item.text}</div></td>
-                    <td>{item.created_at}</td>
+                    {/* <td>{item.created_at}</td> */}
                     <td>{item.retweet_count}</td>
                     <td>{item.fav_count}</td>
                     <td>{item.sentiment}</td>
-                    <td><button>+</button><button>-</button><button>?</button></td>
+                    <td>{item.pos} {item.neg} {item.nat}</td>
+                    <td>
+                        <button onClick={() => {
+                            item.pos += 1
+                            var sum = item.pos + item.neg + item.nat
+                            console.log(i + ',pos : ', item.pos, ((item.pos/sum)*100).toFixed(2))
+                            console.log(i + ',neg : ', item.neg, ((item.neg/sum)*100).toFixed(2))
+                            console.log(i + ',nat : ', item.nat, ((item.nat/sum)*100).toFixed(2))
+                        }}>+</button>
+                        <button onClick={() => {
+                            item.neg += 1
+                            var sum = item.pos + item.neg + item.nat
+                            console.log(i + ',pos : ', item.pos, ((item.pos/sum)*100).toFixed(2))
+                            console.log(i + ',neg : ', item.neg, ((item.neg/sum)*100).toFixed(2))
+                            console.log(i + ',nat : ', item.nat, ((item.nat/sum)*100).toFixed(2))
+                        }}>-</button>
+                        <button onClick={() => {
+                            item.nat += 1
+                            var sum = item.pos + item.neg + item.nat
+                            console.log(i + ',pos : ', item.pos, ((item.pos/sum)*100).toFixed(2))
+                            console.log(i + ',neg : ', item.neg, ((item.neg/sum)*100).toFixed(2))
+                            console.log(i + ',nat : ', item.nat, ((item.nat/sum)*100).toFixed(2))
+                        }}>?</button>
+                    </td>
+                    {/* {console.log(typeof(this.state.list))}  */}
+                    {/* {console.log(this.state.list)} */}
                 </tr>
             )
         })
@@ -80,10 +111,11 @@ export class TableList extends React.Component {
                     <td>{i}</td>
                     <td>{item.user_id}</td>
                     <td><div className='td-text'>{item.text}</div></td>
-                    <td>{item.created_at}</td>
+                    {/* <td>{item.created_at}</td> */}
                     <td>{item.retweet_count}</td>
                     <td>{item.fav_count}</td>
                     <td>{item.sentiment}</td>
+                    <td>{item.pos} {item.neg} {item.nat}</td>
                     <td><button>+</button><button>-</button><button>?</button></td>
                 </tr>
             )
@@ -95,10 +127,11 @@ export class TableList extends React.Component {
                     <td>{i}</td>
                     <td>{item.user_id}</td>
                     <td><div className='td-text'>{item.text}</div></td>
-                    <td>{item.created_at}</td>
+                    {/* <td>{item.created_at}</td> */}
                     <td>{item.retweet_count}</td>
                     <td>{item.fav_count}</td>
                     <td>{item.sentiment}</td>
+                    <td>{item.pos} {item.neg} {item.nat}</td>
                     <td><button>+</button><button>-</button><button>?</button></td>
                 </tr>
             )
@@ -110,17 +143,20 @@ export class TableList extends React.Component {
         return (
             <div className='table-box'>
                 <h1>{this.props.topic} : {this.props.dateShow} ({this.props.type})</h1>
-                {console.log(this.state.list)}
+
+                {/* {console.log(this.state.list)} */}
+
                 <table>
                     <tbody>
                         <tr>
                             <th>no.</th>
                             <th>user_id</th>
                             <th>text</th>
-                            <th>created_at</th>
+                            {/* <th>created_at</th> */}
                             <th>re_count</th>
                             <th>fav_count</th>
                             <th>sentiment</th>
+                            <th>score</th>
                             <th>vote</th>
                         </tr>
                         {chk}

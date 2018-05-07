@@ -44,3 +44,9 @@
 .select-type {
     width: 120px;
 }
+
+.setting-float {
+    /* border:1px dashed gray; */
+    float:right;
+    margin-right: 20px;
+}
