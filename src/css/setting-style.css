@@ -5,8 +5,23 @@
 
 .settingbox {
     border:1px dashed gray;
-    width:100%;
+    /* width:100%; */
+    height: 14em;
 }
+
+.loginbox {
+    border:1px dashed gray;
+    margin-right: 10px;
+    padding: 10px;    
+}
+
+.signupbox {
+    border:1px dashed gray;
+    margin-top: 10px;
+    margin-right: 10px;
+    padding: 10px;    
+}
+
 
 .setting-div-head {
     /* margin-left:20px; */
@@ -39,6 +54,7 @@
 
 .setting-all {
     margin-left:10px;
+    margin-top:24px;
 }
 
 .select-type {
@@ -49,4 +65,18 @@
     /* border:1px dashed gray; */
     float:right;
     margin-right: 20px;
+}
+
+.btnRegister {
+    
+    margin-top: 10px;
+    background-color: #1787c9;
+    color: white;
+    width:100%;
+    padding: 5px;
+}
+
+.divbtnRegister {
+    margin-right: 10px;
+    
 }

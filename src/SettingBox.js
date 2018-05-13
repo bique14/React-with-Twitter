@@ -6,7 +6,61 @@ import moment from 'moment';
 import 'react-datepicker/dist/react-datepicker.css';
 import { TableList } from './TableList.js'
 
+class LoginForm extends React.Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            username: '',
+            password: '',
+        }
+    }
 
+    signIn = (username, password) => {
+        this.setState({
+            username: username,
+            password: password
+        })
+    }
+
+    signOut = () => {
+        this.setState({
+            username: null, password: null
+        })
+    }
+
+    handleSignIn = (e) => {
+        e.preventDefault()
+        let username = this.refs.username.value
+        let password = this.refs.password.value
+        if (!username && !password) {
+            alert('invalid input')
+        } else {
+            // TODO: check match in DB
+            // then signIn
+            this.signIn(username, password)
+        }
+    }
+
+
+
+    render() {
+        const chkLogin = this.state.username ? <div>Welcome, {this.state.username} <button onClick={this.signOut}>Logout</button></div> :
+            <div>
+                <form onSubmit={this.handleSignIn}>
+                    <span>Login </span>
+                    <input type="text" ref="username" placeholder="username" style={{ margin: 3 }} />
+                    <input type="password" ref="password" placeholder="password" style={{ margin: 3 }} />
+                    <input type="submit" value="Login" style={{ margin: 5 }} />
+                </form>
+            </div>
+
+        return (
+            <div className='loginbox'>
+                {chkLogin}
+            </div>
+        )
+    }
+}
 
 export class SettingBox extends React.Component {
     constructor(props) {
@@ -18,11 +72,12 @@ export class SettingBox extends React.Component {
             type: 'all',
             date_show: moment().format('ddd MMM DD'),
             exp: 0,
-            name: ''
+            name: '',
+            visibleSignUp: false
+
         };
         this.handleChange = this.handleChange.bind(this);
         this.handleDrop = this.handleDrop.bind(this)
-        this.responseFacebook = this.responseFacebook.bind(this)
     }
 
     handleChange(date) {
@@ -33,11 +88,6 @@ export class SettingBox extends React.Component {
             dateSelect: date,
             date_show: parse_date
         });
-
-        // console.log(parse_date)
-        // console.log(this.state.date_show)
-        // console.log(this.state.dateSelect)
-        // console.log(moment(date).format('DD/MM/YYYY'))
     }
 
     handleDrop(event) {
@@ -48,28 +98,44 @@ export class SettingBox extends React.Component {
 
     }
 
-    responseFacebook(response) {
+    toggleSignUp = () => {
         this.setState({
-            exp: response.expiresIn,
-            name: response.name
+            visibleSignUp: !this.state.visibleSignUp
         })
-        console.log(response)
+    }
+
+    hangleSignUp = (e) => {
+        e.preventDefault()
+        let username = this.refs.username.value
+        let password = this.refs.password.value
+        if (!username && !password) {
+            alert('invalid register input')
+        } else {
+            // TODO: save to DB
+            this.toggleSignUp()
+        }
     }
 
     render() {
-        // const session_login = this.state.exp === 0 ? <FacebookLogin
-        //     appId="415192565542865"
-        //     autoLoad={true}
-        //     fields="name,email,picture"
-        //     callback={this.responseFacebook}
-        // // onClick={componentClicked}
-        // // callback={responseFacebook} 
-        // /> : <div>{this.state.name}<br />expire in : {this.state.exp}<br /><button>Logout</button></div>
+        const chkSignUp = this.state.visibleSignUp ? <div className='signupbox'>
+            <form onSubmit={this.hangleSignUp}>
+                <span>SignUp </span>
+                <br />
+                <input type="text" ref="username" placeholder="username" style={{ margin: 3 }} />
+                <input type="password" ref="password" placeholder="password" style={{ margin: 3 }} />
+                <input type="submit" value="Submit" style={{ margin: 5, width: 100 }} />
+            </form>
+        </div> : <div className='divbtnRegister'><button className='btnRegister' onClick={this.toggleSignUp}>Register</button></div>
+
         return (
             <div>
                 <div className='settingbox'>
                     <div className='setting-div-head'>
                         <span className='setting-text-head'>Setting</span>
+                    </div>
+                    <div style={{ float: "right" }}>
+                        < LoginForm />
+                        {chkSignUp}
                     </div>
                     <div className='setting-all'>
                         <span className='setting-text-type-social'>Type of Social Media</span>
@@ -77,9 +143,8 @@ export class SettingBox extends React.Component {
                             <option value="twt">Twitter</option>
                             <option value="fb" disabled>Facebook (coming soon)</option>
                         </select><br />
-                        {/* <div className='setting-float'>
-                            {session_login}
-                        </div> */}
+
+
                         <div className='setting-date'>
                             <span>Select Date</span>
                             <DatePicker
@@ -97,7 +162,6 @@ export class SettingBox extends React.Component {
                                 <option value="neg">Negative</option>
                                 {/* <option value="no" disabled>No emotional</option> */}
                             </select><br />
-
                         </div>
 
                     </div>
