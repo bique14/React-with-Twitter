@@ -38,16 +38,6 @@ app.get('/fetch', function (req, res, next) {
 })
 
 app.post('/signup', function (req, res, next) {
-    // userData.collection.insert(req.body, (err, result) => {
-    //     if (err) return console.log(err)
-
-    //     console.log('saved to database')/
-    //     res.redirect('/')
-    // })
-    var username = req.body.username;
-    var password = req.body.password;
-    // console.log(username, password)
-    // console.log(req.body)
     var myData = new userData(req.body);
     myData.save()
         .then(item => {
@@ -59,6 +49,27 @@ app.post('/signup', function (req, res, next) {
             console.log('failed')
         });
 
+})
+
+app.post('/checklogin', function (req, res, next) {
+    var usr = req.body.username
+    var pwd = req.body.password
+    userData.find({}, function (err, data) {
+        const chk = data.forEach(function (dat) {
+            console.log(dat.username == usr && dat.password == pwd)
+            return dat.username == usr && dat.password == pwd
+            // if (dat.username == usr && dat.password == pwd) {
+            //     console.log('match!', dat.password, pwd)
+            //     return false
+            // }else {
+            //     console.log('invalid username or password')
+            //     return false
+            // }
+        })
+        res.json(data)
+        // if (err) console.log('error', error)
+        // else console.log('no err')
+    })
 })
 
 // app.use(bodyParser.json())

@@ -16,10 +16,47 @@ class LoginForm extends React.Component {
     }
 
     signIn = (username, password) => {
-        this.setState({
-            username: username,
-            password: password
+        var BreakException = {};
+
+        fetch('/checklogin', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                username: username,
+                password: password
+            })
         })
+            .then((response) => response.json())
+            .then(chk => {
+                // TODO: easy to hack please re-write code
+                var bool = false
+                try {
+                    chk.forEach((d, i) => {
+                        if (d.username == username && d.password == password) {
+                            bool = true
+                            throw BreakException;
+                        } else {
+                            bool = false
+                        }
+                    })
+                } catch (e) {
+                    if (e !== BreakException) throw e;
+                }
+
+                if (bool) {
+                    this.setState({
+                        username: username,
+                        password: password
+                    })
+                } else {
+                    alert('User not found')
+                    this.refs.username.value = ""
+                    this.refs.password.value = ""
+                }
+            })
     }
 
     signOut = () => {
