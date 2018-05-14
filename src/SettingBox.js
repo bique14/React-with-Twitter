@@ -112,6 +112,17 @@ export class SettingBox extends React.Component {
             alert('invalid register input')
         } else {
             // TODO: save to DB
+            fetch('/signup', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    username: username,
+                    password: password
+                })
+            })
             this.toggleSignUp()
         }
     }
