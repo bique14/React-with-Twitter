@@ -13,6 +13,9 @@ and related to [this project](https://github.com/bique14/AI_miningtweet)
   server // backend
 ```
 
+## React Structure
+![alt text](structure.png "file structure")
+
 ## Required
 ```
   brew install mongodb
