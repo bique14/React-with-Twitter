@@ -6,9 +6,6 @@ const Schema = mongoose.Schema,
     ObjectID = Schema.ObjectID
 mongoose.connect('mongodb://localhost:27017/demo')
 
-// var jsonParser = bodyParser.json()
-// var urlencodedParser = bodyParser.urlencoded({ extended: true })
-
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
@@ -18,7 +15,11 @@ const datatSchema = new Schema({
     created_at: { type: String },
     retweet_count: { type: Number },
     fav_count: { type: Number },
-    sentiment: { type: String }
+    sentiment: { type: String },
+    sum: { type: Number },
+    pos: { type: Number },
+    neg: { type: Number },
+    nat: { type: Number }
 })
 const TwtData = mongoose.model('tweet_data', datatSchema)
 
@@ -48,7 +49,6 @@ app.post('/signup', function (req, res, next) {
             res.status(400).send("unable to save to database");
             console.log('failed')
         });
-
 })
 
 app.post('/checklogin', function (req, res, next) {
@@ -72,10 +72,42 @@ app.post('/checklogin', function (req, res, next) {
     })
 })
 
+// update sentiment in DB
+app.post('/update', function (req, res, next) {
+    // req.body : id(string), pos(nubmer), neg(number), nat(number), sum(number)
+    var upsertData = {
+        $inc: {
+            sum: 1
+        },
+        $set: {
+            pos: req.body.pos,
+            neg: req.body.neg,
+            nat: req.body.nat
+        }
+    };
+
+    TwtData.update({ _id: req.body.id }, upsertData, { upsert: true }, function (err, data) {
+        if (err) return console.log(err);
+        res.send(data);
+    });
+    res.header("Access-Control-Allow-Origin", "*");
+})
+
+// get to calculate 
+app.get('/getScore', function (req, res, next) {
+    const List = TwtData.find({}, function (err, dat) {
+        res.json(dat)
+        if (err) console.log("error", error)
+        else console.log('no err')
+    })
+    res.header("Access-Control-Allow-Origin", "*");
+})
+
 // app.use(bodyParser.json())
 app.get('/', function (req, res) {
     res.send('this is a server')
 })
+
 
 app.listen(4000, function () {
     console.log('Example app listening on port 4000!')

@@ -11,7 +11,6 @@ class LoginForm extends React.Component {
         super(props)
         this.state = {
             username: '',
-            password: '',
         }
     }
 
@@ -49,8 +48,8 @@ class LoginForm extends React.Component {
                 if (bool) {
                     this.setState({
                         username: username,
-                        password: password
                     })
+                    this.props.callUsername(username)
                 } else {
                     alert('User not found')
                     this.refs.username.value = ""
@@ -72,13 +71,9 @@ class LoginForm extends React.Component {
         if (!username && !password) {
             alert('invalid input')
         } else {
-            // TODO: check match in DB
-            // then signIn
             this.signIn(username, password)
         }
     }
-
-
 
     render() {
         const chkLogin = this.state.username ? <div>Welcome, {this.state.username} <button onClick={this.signOut}>Logout</button></div> :
@@ -110,7 +105,8 @@ export class SettingBox extends React.Component {
             date_show: moment().format('ddd MMM DD'),
             exp: 0,
             name: '',
-            visibleSignUp: false
+            visibleSignUp: false,
+            username: ''
 
         };
         this.handleChange = this.handleChange.bind(this);
@@ -161,7 +157,14 @@ export class SettingBox extends React.Component {
                 })
             })
             this.toggleSignUp()
+            alert('Resgister success!')
         }
+    }
+
+    callUsername = (username) => {
+        this.setState({
+            username: username
+        })
     }
 
     render() {
@@ -182,7 +185,7 @@ export class SettingBox extends React.Component {
                         <span className='setting-text-head'>Setting</span>
                     </div>
                     <div style={{ float: "right" }}>
-                        < LoginForm />
+                        < LoginForm callUsername={this.callUsername} />
                         {chkSignUp}
                     </div>
                     <div className='setting-all'>
@@ -218,6 +221,7 @@ export class SettingBox extends React.Component {
                     topic={this.state.topic}
                     type={this.state.type}
                     dateShow={this.state.date_show}
+                    username={this.state.username} // for handle to vote sentiment
                 />
 
             </div>

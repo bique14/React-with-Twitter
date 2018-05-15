@@ -20,9 +20,21 @@ export class TableList extends React.Component {
         }
     }
 
-    onClickVotePos = (item, i) => {
-        console.log(item)
-        console.log(i)
+    updateSentiment = (pos, neg, nat, id, sum) => {
+        fetch('/update', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                id: id,
+                pos: parseInt(pos),
+                neg: parseInt(neg),
+                nat: parseInt(nat),
+                sum: parseInt(sum)
+            })
+        })
     }
 
 
@@ -33,11 +45,9 @@ export class TableList extends React.Component {
 
         this.state.list.forEach((item, i) => {
             if (item.sentiment === 'pos' && (item.created_at === this.props.dateShow)) {
-                // console.log('1')
                 arr_pos.push(this.state.list[i])
                 arr_all.push(this.state.list[i])
             } else if (item.sentiment === 'neg' && (item.created_at === this.props.dateShow)) {
-                // console.log('2')
                 arr_neg.push(this.state.list[i])
                 arr_all.push(this.state.list[i])
             }
@@ -53,32 +63,52 @@ export class TableList extends React.Component {
                     <td>{item.retweet_count}</td>
                     <td>{item.fav_count}</td>
                     <td>{item.sentiment}</td>
-                    <td>{item.pos} {item.neg} {item.nat}</td>
+                    <td>{item.pos}% {item.neg}% {item.nat}%</td>
                     <td>
                         <button onClick={() => {
-                            item.pos += 1
-                            var sum = item.pos + item.neg + item.nat
-                            console.log(i + ',pos : ', item.pos, ((item.pos/sum)*100).toFixed(2))
-                            console.log(i + ',neg : ', item.neg, ((item.neg/sum)*100).toFixed(2))
-                            console.log(i + ',nat : ', item.nat, ((item.nat/sum)*100).toFixed(2))
+                            if (this.props.username) {
+                                // TODO: บัค เพราะต้อเอาตัวจาก DB มาคิด ไม่ใช่จาก client
+                                item.pos += 1
+                                var sum = item.pos + item.neg + item.nat
+                                var pos_percent = ((item.pos / sum) * 100).toFixed(2)
+                                var neg_percent = ((item.neg / sum) * 100).toFixed(2)
+                                var nat_percent = ((item.nat / sum) * 100).toFixed(2)
+                                console.log('id:', item._id, 'sum:', sum, 'score :', item.pos, pos_percent, item.neg, neg_percent, item.nat, nat_percent)
+                                this.updateSentiment(pos_percent, neg_percent, nat_percent, item._id, sum)
+                            } else {
+                                alert('no login')
+                            }
+
                         }}>+</button>
                         <button onClick={() => {
-                            item.neg += 1
-                            var sum = item.pos + item.neg + item.nat
-                            console.log(i + ',pos : ', item.pos, ((item.pos/sum)*100).toFixed(2))
-                            console.log(i + ',neg : ', item.neg, ((item.neg/sum)*100).toFixed(2))
-                            console.log(i + ',nat : ', item.nat, ((item.nat/sum)*100).toFixed(2))
+                            if (this.props.username) {
+                                // TODO: บัค เพราะต้อเอาตัวจาก DB มาคิด ไม่ใช่จาก client                                
+                                item.neg += 1
+                                var sum = item.pos + item.neg + item.nat
+                                var pos_percent = ((item.pos / sum) * 100).toFixed(2)
+                                var neg_percent = ((item.neg / sum) * 100).toFixed(2)
+                                var nat_percent = ((item.nat / sum) * 100).toFixed(2)
+                                console.log('id:', item._id, 'sum:', sum, 'score :', item.pos, pos_percent, item.neg, neg_percent, item.nat, nat_percent)
+                                this.updateSentiment(pos_percent, neg_percent, nat_percent, item._id, sum)
+                            } else {
+                                alert('no login')
+                            }
                         }}>-</button>
                         <button onClick={() => {
-                            item.nat += 1
-                            var sum = item.pos + item.neg + item.nat
-                            console.log(i + ',pos : ', item.pos, ((item.pos/sum)*100).toFixed(2))
-                            console.log(i + ',neg : ', item.neg, ((item.neg/sum)*100).toFixed(2))
-                            console.log(i + ',nat : ', item.nat, ((item.nat/sum)*100).toFixed(2))
+                            if (this.props.username) {
+                                // TODO: บัค เพราะต้อเอาตัวจาก DB มาคิด ไม่ใช่จาก client                                
+                                item.nat += 1
+                                var sum = item.pos + item.neg + item.nat
+                                var pos_percent = ((item.pos / sum) * 100).toFixed(2)
+                                var neg_percent = ((item.neg / sum) * 100).toFixed(2)
+                                var nat_percent = ((item.nat / sum) * 100).toFixed(2)
+                                console.log('id:', item._id, 'sum:', sum, 'score :', item.pos, pos_percent, item.neg, neg_percent, item.nat, nat_percent)
+                                this.updateSentiment(pos_percent, neg_percent, nat_percent, item._id, sum)
+                            } else {
+                                alert('no login')
+                            }
                         }}>?</button>
                     </td>
-                    {/* {console.log(typeof(this.state.list))}  */}
-                    {/* {console.log(this.state.list)} */}
                 </tr>
             )
         })
@@ -90,11 +120,10 @@ export class TableList extends React.Component {
                     <td>{i}</td>
                     <td>{item.user_id}</td>
                     <td><div className='td-text'>{item.text}</div></td>
-                    {/* <td>{item.created_at}</td> */}
                     <td>{item.retweet_count}</td>
                     <td>{item.fav_count}</td>
                     <td>{item.sentiment}</td>
-                    <td>{item.pos} {item.neg} {item.nat}</td>
+                    <td>{item.pos}% {item.neg}% {item.nat}%</td>
                     <td><button>+</button><button>-</button><button>?</button></td>
                 </tr>
             )
@@ -106,11 +135,10 @@ export class TableList extends React.Component {
                     <td>{i}</td>
                     <td>{item.user_id}</td>
                     <td><div className='td-text'>{item.text}</div></td>
-                    {/* <td>{item.created_at}</td> */}
                     <td>{item.retweet_count}</td>
                     <td>{item.fav_count}</td>
                     <td>{item.sentiment}</td>
-                    <td>{item.pos} {item.neg} {item.nat}</td>
+                    <td>{item.pos}% {item.neg}% {item.nat}%</td>
                     <td><button>+</button><button>-</button><button>?</button></td>
                 </tr>
             )
@@ -122,16 +150,12 @@ export class TableList extends React.Component {
         return (
             <div className='table-box'>
                 <h1>{this.props.topic} : {this.props.dateShow} ({this.props.type})</h1>
-
-                {/* {console.log(this.state.list)} */}
-
                 <table>
                     <tbody>
                         <tr>
                             <th>no.</th>
                             <th>user_id</th>
                             <th>text</th>
-                            {/* <th>created_at</th> */}
                             <th>re_count</th>
                             <th>fav_count</th>
                             <th>sentiment</th>
