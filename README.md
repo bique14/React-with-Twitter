@@ -1,13 +1,13 @@
 # Playground MERN STACK with Twitter API
 
-###### (process of sentiment analysis is in progress) 
+###### (process of sentiment analysis is in progress)
 This is playground project about MERN stack and Twitter API
 for sentiment analysis on twitter and show to website.
 and related to [this project](https://github.com/bique14/AI_miningtweet)
 
 
 
-## Folders Structure 
+## Folders Structure
 ```
   src // frontend
   server // backend
@@ -22,7 +22,10 @@ and related to [this project](https://github.com/bique14/AI_miningtweet)
 ```
 
 ## Start
-***first***
+```
+password=<your_password> ./run.sh
+```
+<!-- ***first***
 ```
   mongod
 ```
@@ -38,4 +41,4 @@ and related to [this project](https://github.com/bique14/AI_miningtweet)
 ```
 > application will launch in localhost:3000
 
----
+--- -->
